@@ -1,0 +1,67 @@
+
+{% macro auction_info(year, make, model, mileage, closing_date, url, imgurl) %}
+  <div class="row uniform">
+
+    <div class="1u 12u$(medium)"></div>
+
+    <div class="5u 12u$(medium)">
+      <p>
+        Year: <strong>{{ year }}</strong>
+        <br>
+        Make: <strong>{{ make }}</strong>
+        <br>
+        Model: <strong>{{ model }}</strong>
+        <br>
+        Mileage: <strong>{{ mileage }}</strong>
+        <br>
+        Closing Date: <strong>{{ closing_date|date_format }}</strong>
+        <br>
+        <a href="{{ url }}" target="_blank"><strong>URL</strong></a>
+      </p>
+    </div>
+
+    {% if imgurl != None %}
+    <div class="5u 12u$(medium)">
+      <span class="image fit"><img src="{{ imgurl }}" alt="Auction thumbnail" /></span>
+    </div>
+    {% endif %}
+
+    <div class="1u$ 12u$(medium)"></div>
+
+  </div>
+{% endmacro %}
+
+
+{% macro error_box(errmsg) %}
+  {% if errmsg %}
+  <div class="row uniform">
+    <div class="3u 12u$(medium)"></div>
+    <div class="9u$ 12u$(medium)">
+      <p style="color:red">
+      {% for para in errmsg %}
+        {{ para }}
+        <br>
+      {% endfor %}
+      </p>
+    </div>
+  </div>
+  {% endif %}
+{% endmacro %}
+
+
+{% macro info_box(infomsg) %}
+  {% if infomsg %}
+  <div class="row uniform">
+    <div class="3u 12u$(medium)"></div>
+    <div class="9u$ 12u$(medium)">
+      <p style="color:green">
+      {% for para in infomsg %}
+        {{ para }}
+        <br>
+      {% endfor %}
+      </p>
+    </div>
+  </div>
+  {% endif %}
+{% endmacro %}
+

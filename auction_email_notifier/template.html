@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      table,
+      td,
+      th {
+        border: 1px solid grey;
+        border-collapse: collapse;
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    Hi {{ user }},<br /><br />
+    Checkout your auctions below:<br /><br />
+    <table>
+      <thead>
+        <tr>
+          {% for auction_table_header in auction_table_headers %}
+          <th>{{ auction_table_header }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for auction_table_row in auction_table_rows %}
+        <tr>
+          {% for auction_data in auction_table_row %}
+          <td>{{ auction_data }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <br />
+    Sincerely,<br />
+    Auction Tracker
+  </body>
+</html>

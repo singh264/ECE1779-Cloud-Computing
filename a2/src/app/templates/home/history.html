@@ -1,0 +1,76 @@
+{% extends "home/template.html" %}
+{% import "shared/macros.html" as macros %}
+
+{% set subpage = True %}
+{% set title = "History" %}
+
+{% block main %}
+
+<!-- Form -->
+<form action="/history" method="POST" id="category_form">
+  <div class="row uniform">
+
+    <div class="8u 12u$(small)">
+      <div class="select-wrapper">
+        <select id="history_category" name="history_category" required>
+          <option value=""                              {% if history_category ==''      %} selected {% endif %} >- Select an image category -</option>
+          <option value="list1" name="list1" id="list1" {% if history_category =="list1" %} selected {% endif %} >Images with no faces detected</option>
+          <option value="list2" name="list2" id="list2" {% if history_category =="list2" %} selected {% endif %} >Images where all faces have masks</option>
+          <option value="list3" name="list3" id="list3" {% if history_category =="list3" %} selected {% endif %} >Images where no faces have masks</option>
+          <option value="list4" name="list4" id="list4" {% if history_category =="list4" %} selected {% endif %} >Images where some faces have masks</option>
+        </select>
+      </div>
+    </div>
+    <div class="4u$ 12u$(small)">
+      <input type="submit" id="get_history" name="get_history" value="Get" class="button special" />
+    </div>
+
+  </div>
+</form>
+
+<!-- Image list -->
+{% if image_list!=None %}
+  <table style="table-layout:fixed; width:100%;">
+    <tbody>
+      {% for image in image_list %}
+        <tr>
+          <td style="width:80%;">{{ macros.image_info(image[0], image[1], image[2], image[3]) }}</td>
+          <td style="width:20%; text-align:left; vertical-align:middle">
+            <form action="/history" method="POST">
+              <input id="imgkey" name="imgkey" type="hidden" value="{{image[4]}}">
+              <input id="history_category" name="history_category" type="hidden" value="">
+              <input type="submit" id="delete_img" name="delete_img" value="Delete" class="button" onclick="javascript:getCategory(this.form);" />
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p style="text-align:center"><strong>No history</strong></p>
+{% endif %}
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+  // Find an element of given name in the form
+  function findTargetNode(targetForm, name) {
+    var targetElems = targetForm.elements;
+    for (var i = 0; i < targetElems.length; i++) {
+      var elem = targetElems.item(i);
+      if (elem.name === name) {
+        return elem;
+      }
+    }
+  }
+
+  // Grab history_category from the dropdown form and embed in this form
+  function getCategory(thisForm) {
+    var categoryForm = document.getElementById("category_form");
+    var fromNode = findTargetNode(categoryForm, "history_category");
+    var toNode   = findTargetNode(thisForm, "history_category");
+    toNode.value = fromNode.value;
+  }
+</script>
+{% endblock %}

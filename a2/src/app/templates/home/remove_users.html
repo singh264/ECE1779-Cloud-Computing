@@ -1,0 +1,31 @@
+{% extends "home/template.html" %}
+
+{% set subpage = True %}
+{% set title = "Remove Users" %}
+
+{% block main %}
+
+<table>
+  <thead>
+    <tr>
+        <th>Username</th>
+        <th>User email</th>
+    </tr>
+  </thead>
+    <tbody>
+     {% for user in data %}
+            <tr>
+                <td>{{user[0]}}</td>
+                <td>{{user[1]}}</td>
+                <td style="text-align:right">
+                    <form action="/remove-user" method="POST">
+                    <input id="username" name="username" type="hidden" value="{{user[0]}}">
+                    <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

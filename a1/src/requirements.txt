@@ -1,0 +1,17 @@
+# This file is used by pip to install required python packages
+# Usage: pip install -r requirements.txt
+
+# Webapp
+flask
+flask-bcrypt
+mysql-connector
+flask_mail
+pyjwt
+gunicorn
+validators
+requests
+
+# AI model
+opencv-python
+torch
+torchvision

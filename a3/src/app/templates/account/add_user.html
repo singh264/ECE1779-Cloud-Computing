@@ -1,0 +1,34 @@
+{% extends "account/template.html" %}
+
+{% set subpage = True %}
+{% set title = "Add User" %}
+
+{% block main %}
+
+<!-- Form -->
+<form action="/add-user" method="POST">
+  <div class="row uniform">
+
+    <div class="12u$">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="johndoe" />
+    </div>
+
+    <div class="12u$">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="john.doe@gmail.com" />
+    </div>
+
+    <div class="12u$">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="thingamajig" />
+    </div>
+
+    <div class="12u$">
+      <input type="submit" id="adduser" name="adduser" value="Add User" class="button special" />
+    </div>
+
+  </div>
+</form>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% import "shared/macros.html" as macros %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Import our custom stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
+  <title>{{ title }}</title>
+</head>
+
+<body>
+
+  <section id="main" class="wrapper">
+    <div class="inner">
+      <!-- Title -->
+      <header class="align-center">
+        <h2>{{ title }}</h2>
+      </header>
+
+      <!-- Body -->
+      {% block main %}{% endblock %}
+
+      <!-- Errors -->
+      {{ macros.error_box(errmsg) }}
+    </div>
+  </section>
+
+  {% include "shared/footer.html" %}
+
+  <script src="{{ url_for('static', filename='js/jquery.slim.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/skel.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/util.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block script %}{% endblock %}
+</body>
+
+</html>
+

@@ -1,0 +1,136 @@
+{% extends "controls/template.html" %}
+{% import "shared/macros.html" as macros %}
+
+{% set subpage = True %}
+{% set title = "Worker Pool Scaling" %}
+
+{% block main %}
+
+<!-- Live worker count -->
+<center><h4 id="worker_count" style="color: #9a9a9a; display: block;">Current worker count</h4></center>
+
+<!-- Form -->
+<form action="/pool" method="POST">
+
+  <h3>Manual Controls</h3>
+  <div class="row uniform">
+    <div class="12u$">
+      <p>Incrementally add or remove workers</p>
+    </div>
+    <!-- + button -->
+    <div class="2u 12u$(small)">
+      <input type="submit" id="minus1" name="minus1" value="-" class="button" style="font-size: 2em; padding: 16px 16px; height: 2em; width: 2em; line-height: 22px;"/>
+    </div>
+    <!-- - button -->
+    <div class="2u$ 12u$(small)">
+      <input type="submit" id="plus1" name="plus1" value="+" class="button" style="font-size: 2em; padding: 16px 16px; height: 2em; width: 2em; line-height: 22px;"/>
+    </div>
+  </div>
+
+  <br>
+  <br>
+
+  <h3>Auto Policy</h3>
+  <div class="row uniform">
+    <!-- enable checkbox -->
+    <div class="12u$">
+      {% if enable_auto %}
+        <input type="checkbox" name="enable_auto_policy" id="enable_auto_policy" checked>
+      {% else %}
+        <input type="checkbox" name="enable_auto_policy" id="enable_auto_policy">
+      {% endif %}
+      <label for="enable_auto_policy">Enable auto policy</label>
+    </div>
+
+    <!-- min threshold -->
+    <div class="12u$">
+      <label>Minimum threshold (0 to 100%)</label>
+    </div>
+    <div class="2u 12u$(small)">
+      <p>Current:</p>
+    </div>
+    <div class="2u 12u$(small)">
+      <p><strong>{{ min_thresh }}</strong></p>
+    </div>
+    <div class="2u 12u$(small)">
+      <p>New:</p>
+    </div>
+    <div class="3u$ 12u$(small)">
+      <input type="text" id="min_thresh" name="min_thresh" placeholder="20" />
+    </div>
+
+    <!-- max threshold -->
+    <div class="12u$">
+      <label>Maximum threshold (0 to 100%)</label>
+    </div>
+    <div class="2u 12u$(small)">
+      <p>Current:</p>
+    </div>
+    <div class="2u 12u$(small)">
+      <p><strong>{{ max_thresh }}</strong></p>
+    </div>
+    <div class="2u 12u$(small)">
+      <p>New:</p>
+    </div>
+    <div class="3u$ 12u$(small)">
+      <input type="text" id="max_thresh" name="max_thresh" placeholder="25" />
+    </div>
+
+    <!-- grow ratio -->
+    <div class="12u$">
+      <label>Grow ratio</label>
+    </div>
+    <div class="2u 12u$(small)">
+      <p>Current:</p>
+    </div>
+    <div class="2u 12u$(small)">
+      <p><strong>{{ grow_ratio }}</strong></p>
+    </div>
+    <div class="2u 12u$(small)">
+      <p>New:</p>
+    </div>
+    <div class="3u$ 12u$(small)">
+      <input type="text" id="grow_ratio" name="grow_ratio" placeholder="2" />
+    </div>
+
+    <!-- shrink ratio -->
+    <div class="12u$">
+      <label>Shrink ratio</label>
+    </div>
+    <div class="2u 12u$(small)">
+      <p>Current:</p>
+    </div>
+    <div class="2u 12u$(small)">
+      <p><strong>{{ shrink_ratio }}</strong></p>
+    </div>
+    <div class="2u 12u$(small)">
+      <p>New:</p>
+    </div>
+    <div class="3u$ 12u$(small)">
+      <input type="text" id="shrink_ratio" name="shrink_ratio" placeholder="0.5" />
+    </div>
+
+    <!-- update button -->
+    <div class="12u$">
+      <input type="submit" id="update_auto" name="update_auto" value="Set" class="button special" />
+    </div>
+  </div>
+
+</form>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+// Update worker count periodically
+setInterval(function () {
+    var requests = $.get('/live-num-workers');
+    requests.done(function (result) {
+        $("#worker_count").html(`Current worker count: <strong>${result}</strong>`);
+    });
+}, 1000);
+</script>
+
+{% endblock %}
+

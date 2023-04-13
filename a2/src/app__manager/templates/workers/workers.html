@@ -1,0 +1,38 @@
+{% extends "workers/template.html" %}
+{% import "shared/macros.html" as macros %}
+
+{% set subpage = False %}
+{% set title = "Workers" %}
+
+{% block main %}
+
+{% if workers != None and workers|length != 0 %}
+  <table style="table-layout:fixed; width:100%;">
+    <tbody>
+      {% for worker in workers %}
+        <tr>
+          <td>
+            <div class="row uniform">
+              <div class="3u 12u$(medium)">
+                <p>ID: <strong>{{ worker.id }}</strong></p>
+              </div>
+              <div class="3u$ 12u$(medium)">
+                <p>State: <strong>{{ worker.state }}</strong></p>
+              </div>
+              <div class="6u 12u$(medium)">
+                {{ macros.chart(chart_id='chart1_'+worker.id, data_all_url=url_for('cpuutil_data_all', worker_id=worker.id), data_new_url=url_for('cpuutil_data_new', worker_id=worker.id), update_ms=60000, title='CPU utilization', y_label='CPU utilization (%)', x_width=30, font_color='#555', height='75%') }}
+              </div>
+              <div class="6u$ 12u$(medium)">
+                {{ macros.chart(chart_id='chart2_'+worker.id, data_all_url=url_for('httpreq_data_all', worker_id=worker.id), data_new_url=url_for('httpreq_data_new', worker_id=worker.id), update_ms=60000, title='HTTP requests', y_label='Total HTTP requests', x_width=30, font_color='#555', height='75%') }}
+              </div>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p style="text-align:center"><strong>No workers</strong></p>
+{% endif %}
+
+{% endblock %}

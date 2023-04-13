@@ -1,0 +1,26 @@
+<!-- Header -->
+<header id="header">
+  <div class="inner">
+    {% if 'user' in session %}
+    <p class="logo">Hi <strong>{{ session['user']['username'] }}</strong></p>
+    {% endif %}
+    <nav id="nav">
+      <a href="/auctions">Auctions</a>
+      {% if 'user' not in session %}
+      <!-- Currently signed out -->
+      <a href="/sign-in">Sign in</a>
+      {% else %}
+      <!-- Currently signed in -->
+      <a href="/saved-auctions">Saved auctions</a>
+      <a href="/change-password">Change password</a>
+      {% if session['user']['username'] == 'admin'%}
+      <!-- Admin pages -->
+      <a href="/add-user">Add user</a>
+      <a href="/remove-user">Remove user</a>
+      {% endif %}
+      <a href="/sign-out">Sign out</a>
+      {% endif %}
+    </nav>
+    <a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+  </div>
+</header>

@@ -1,0 +1,54 @@
+
+{% macro image_info(imgurl, num_faces, num_masks, num_nomasks) %}
+  <div class="row uniform">
+    <div class="2u 12u$(medium)"></div>
+    <div class="4u 12u$(medium)">
+      <span class="image fit"><img src="{{ imgurl }}" alt="Processed image" /></span>
+    </div>
+    <div class="4u 12u$(medium)">
+      <p>
+        Number of faces: <strong>{{ num_faces }}</strong>
+        <br>
+        Number of faces with masks: <strong>{{ num_masks }}</strong>
+        <br>
+        Number of faces without masks: <strong>{{ num_nomasks }}</strong>
+      </p>
+    </div>
+    <div class="2u$ 12u$(medium)"></div>
+  </div>
+{% endmacro %}
+
+
+{% macro error_box(errmsg) %}
+  {% if errmsg %}
+  <div class="row uniform">
+    <div class="3u 12u$(medium)"></div>
+    <div class="9u$ 12u$(medium)">
+      <p style="color:red">
+      {% for para in errmsg %}
+        {{ para }}
+        <br>
+      {% endfor %}
+      </p>
+    </div>
+  </div>
+  {% endif %}
+{% endmacro %}
+
+
+{% macro info_box(infomsg) %}
+  {% if infomsg %}
+  <div class="row uniform">
+    <div class="3u 12u$(medium)"></div>
+    <div class="9u$ 12u$(medium)">
+      <p style="color:green">
+      {% for para in infomsg %}
+        {{ para }}
+        <br>
+      {% endfor %}
+      </p>
+    </div>
+  </div>
+  {% endif %}
+{% endmacro %}
+

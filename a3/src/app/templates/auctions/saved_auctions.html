@@ -1,0 +1,73 @@
+{% extends "auctions/template.html" %}
+{% import "shared/macros.html" as macros %}
+
+{% set subpage = False %}
+{% set title = "Saved Auctions" %}
+
+{% block main %}
+
+<!-- Auction list -->
+{% if auction_list != None and auction_list|length != 0 %}
+  <table style="table-layout:fixed; width:100%;">
+    <tbody>
+      {% for auction in auction_list %}
+        <tr>
+          <td style="width:80%;">{{ macros.auction_info(auction['year'], auction['model'], auction['make'], auction['mileage'], auction['closing_date'], auction['url'], image_list[auction['lot_id']]) }}</td>
+          <td style="width:20%; text-align:left; vertical-align:middle">
+            <div class="row uniform">
+              <div class="12u$">
+                <input type="button" id="save_{{auction['lot_id']}}" name="save_{{auction['lot_id']}}" value="Un-Save" class="button" onclick="javascript:postAuction('save', '{{auction['lot_id']}}');" >
+              </div>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p style="text-align:center"><strong>You currently have no saved lots</strong></p>
+{% endif %}
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+  // Find an element of given name in the form
+  function findTargetNode(targetForm, name) {
+    var targetElems = targetForm.elements;
+    for (var i = 0; i < targetElems.length; i++) {
+      var elem = targetElems.item(i);
+      if (elem.name === name) {
+        return elem;
+      }
+    }
+  }
+
+  // Send HTTP request for this auction
+  function postAuction(action, auctionId) {
+    $.ajax({
+      type: "POST",
+      url:  "/process-auction",
+      data: {
+        'id': auctionId,
+        'action': action
+      },
+      success: function (data) {
+        // Post alert message, if any
+        if (data.hasOwnProperty('errmsg')) {
+          alert(data['errmsg']);
+        } else {
+          // Update button text
+          var button = document.getElementById(action + "_" + auctionId);
+          if (button.value.startsWith("Un-")) {
+            button.value = button.value.replace("Un-", "");
+          } else {
+            button.value = "Un-" + button.value;
+          }
+        }
+      }
+    });
+  }
+</script>
+{% endblock %}
+

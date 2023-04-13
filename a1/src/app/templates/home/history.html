@@ -1,0 +1,40 @@
+{% extends "home/template.html" %}
+{% import "shared/macros.html" as macros %}
+
+{% set subpage = True %}
+{% set title = "History" %}
+
+{% block main %}
+
+<!-- Form -->
+<form action="/history" method="POST">
+  <div class="row uniform">
+
+    <div class="8u 12u$(small)">
+      <div class="select-wrapper">
+        <select id="history_category" name="history_category" required>
+          <option value=""                              {% if history_category ==''      %} selected {% endif %} >- Select an image category -</option>
+          <option value="list1" name="list1" id="list1" {% if history_category =="list1" %} selected {% endif %} >Images with no faces detected</option>
+          <option value="list2" name="list2" id="list2" {% if history_category =="list2" %} selected {% endif %} >Images where all faces have masks</option>
+          <option value="list3" name="list3" id="list3" {% if history_category =="list3" %} selected {% endif %} >Images where no faces have masks</option>
+          <option value="list4" name="list4" id="list4" {% if history_category =="list4" %} selected {% endif %} >Images where some faces have masks</option>
+        </select>
+      </div>
+    </div>
+    <div class="4u$ 12u$(small)">
+      <input type="submit" id="get_history" name="get_history" value="Get" class="button special" />
+    </div>
+
+  </div>
+</form>
+
+<!-- Image list -->
+{% if image_list!=None %}
+  {% for image in image_list %}
+    {{ macros.image_info(image[0], image[1], image[2], image[3]) }}
+  {% endfor %}
+{% else %}
+  <p style="text-align:center"><strong>No history</strong></p>
+{% endif %}
+
+{% endblock %}

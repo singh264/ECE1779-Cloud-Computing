@@ -1,0 +1,78 @@
+{% import "shared/macros.html" as macros %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Import our custom stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
+  <title>{{ title }}</title>
+
+  <script src="{{ url_for('static', filename='js/jquery.slim.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/skel.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/util.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+  <!-- Bootstrap JavaScript Links -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+  <!-- JQuery links  -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  {% block script %}{% endblock %}
+</head>
+
+{% if subpage %}
+<body class="subpage">
+{% else %}
+<body>
+{% endif %}
+
+  {% include "shared/navbar.html" %}
+
+  {% if not subpage %}
+  <!-- Banner -->
+  <section id="banner">
+    <div class="inner">
+      <header>
+        <h1>{{ title }}</h1>
+      </header>
+    </div>
+  </section>
+  {% endif %}
+
+  <section id="main" class="wrapper">
+    <div class="inner">
+      {% if subpage %}
+      <!-- Title -->
+      <header class="align-center">
+        <h2>{{ title }}</h2>
+      </header>
+      {% endif %}
+
+      <!-- Body -->
+      {% block main %}{% endblock %}
+
+      <!-- Errors -->
+      {{ macros.error_box(errmsg) }}
+
+      <!-- Info -->
+      {{ macros.info_box(infomsg) }}
+    </div>
+  </section>
+
+  {% include "shared/footer.html" %}
+</body>
+
+</html>
+

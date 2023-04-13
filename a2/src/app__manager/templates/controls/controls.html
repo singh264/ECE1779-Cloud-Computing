@@ -1,0 +1,31 @@
+{% extends "controls/template.html" %}
+{% import "shared/macros.html" as macros %}
+
+{% set subpage = True %}
+{% set title = "General Controls" %}
+
+{% block main %}
+
+<!-- Form -->
+<form action="/controls" method="POST">
+  <div class="row uniform">
+
+    <div class="6u 12u$(medium)">
+      <input type="submit" id="clear_db" name="clear_db" value="Clear database" class="button" />
+    </div>
+    <div class="6u$ 12u$(medium)">
+      <input type="submit" id="clear_s3" name="clear_s3" value="Clear S3" class="button" />
+    </div>
+
+    <div class="6u 12u$(medium)">
+      <input type="submit" id="stop_workers" name="stop_workers" value="Stop workers" class="button" />
+    </div>
+    <div class="6u$ 12u$(medium)">
+      <input type="submit" id="stop_all" name="stop_all" value="Stop all" class="button special" />
+    </div>
+
+  </div>
+</form>
+
+{% endblock %}
+

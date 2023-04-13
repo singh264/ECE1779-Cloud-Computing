@@ -1,0 +1,64 @@
+{% extends "home/template.html" %}
+{% import "shared/macros.html" as macros %}
+
+{% set subpage = False %}
+{% set title = "Mask Detector" %}
+
+{% block main %}
+
+<!-- Form -->
+<form action="/home" method="POST" enctype=multipart/form-data>
+  <div class="row uniform">
+
+    <div class="2u 12u$(small)">
+      <input type="radio" name="imgsrc" id="imgsrc_url" value="imgsrc_url" onclick="javascript:imgsrc_check();" checked>
+      <label for="imgsrc_url">URL</label>
+    </div>
+    <div class="2u$ 12u$(small)">
+      <input type="radio" name="imgsrc" id="imgsrc_file" value="imgsrc_file" onclick="javascript:imgsrc_check();">
+      <label for="imgsrc_file">File</label>
+    </div>
+
+    <div class="12u$" id="imgurl_div" style="display:block">
+      <input type="text" id="imgurl" name="imgurl" placeholder="URL" />
+    </div>
+
+    <div class="12u$" id="imgfile_div" style="display:none">
+      <label for="imgfile" class="custom-file-upload">Choose file...</label>
+      <span id="imgfile_text" class="custom-file-text"></span>
+      <input name="imgfile" id="imgfile" type="file" placeholder="Browse" accept="image/*">
+    </div>
+
+    <div class="12u$">
+      <input type="submit" id="upload" name="upload" value="Upload" class="button special" />
+    </div>
+
+  </div>
+</form>
+
+<!-- Image -->
+{% if imgurl %}
+  {{ macros.image_info(imgurl, num_faces, num_masks, num_nomasks) }}
+{% endif %}
+
+{% endblock %}
+
+{% block script %}
+<script>
+  // 'File upload' button - update text with filename
+  $('#imgfile').on('change', function() { var fileName = ''; fileName = $(this).val(); $('#imgfile_text').text(fileName); })
+</script>
+
+<script type="text/javascript">
+  // Reveal URL field or 'file upload' based on radio buttons
+  function imgsrc_check() {
+    if (document.getElementById('imgsrc_url').checked) {
+      document.getElementById('imgurl_div').style.display = 'block';
+      document.getElementById('imgfile_div').style.display = 'none';
+    } else {
+      document.getElementById('imgurl_div').style.display = 'none';
+      document.getElementById('imgfile_div').style.display = 'block';
+    }
+  }
+</script>
+{% endblock %}

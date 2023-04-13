@@ -1,0 +1,28 @@
+{% extends "login/template.html" %}
+
+{% set title = "Sign In" %}
+
+{% block main %}
+
+<!-- Form -->
+<form action="/sign-in" method="POST">
+  <div class="row uniform">
+
+    <div class="12u$">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="johndoe" />
+    </div>
+
+    <div class="12u$">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="abracadabra" />
+    </div>
+
+    <div class="12u$">
+      <input type="submit" id="signin" name="signin" value="Sign in" class="button special" />
+    </div>
+
+  </div>
+</form>
+
+{% endblock %}

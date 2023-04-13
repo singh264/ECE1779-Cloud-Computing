@@ -1,0 +1,36 @@
+# This file is used by pip to install required python packages
+# Usage: pip install -r requirements.txt
+
+# AWS
+boto3
+botocore
+
+# Webapp
+flask
+flask-bcrypt
+mysql-connector
+flask_mail
+pyjwt
+gunicorn
+validators
+requests
+certifi
+chardet
+idna
+jmespath
+python-dateutil
+s3transfer
+six
+urllib3
+pytz
+aiofiles
+aiohttp
+async-timeout
+attrs
+multidict
+typing-extensions
+yarl
+
+
+
+

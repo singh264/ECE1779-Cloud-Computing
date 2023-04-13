@@ -1,0 +1,171 @@
+
+{% macro image_info(imgurl, num_faces, num_masks, num_nomasks) %}
+  <div class="row uniform">
+    <div class="2u 12u$(medium)"></div>
+    <div class="4u 12u$(medium)">
+      <span class="image fit"><img src="{{ imgurl }}" alt="Processed image" /></span>
+    </div>
+    <div class="4u 12u$(medium)">
+      <p>
+        Number of faces: <strong>{{ num_faces }}</strong>
+        <br>
+        Number of faces with masks: <strong>{{ num_masks }}</strong>
+        <br>
+        Number of faces without masks: <strong>{{ num_nomasks }}</strong>
+      </p>
+    </div>
+    <div class="2u$ 12u$(medium)"></div>
+  </div>
+{% endmacro %}
+
+
+{% macro error_box(errmsg) %}
+  {% if errmsg %}
+  <div class="row uniform">
+    <div class="3u 12u$(medium)"></div>
+    <div class="9u$ 12u$(medium)">
+      <p style="color:red">
+      {% for para in errmsg %}
+        {{ para }}
+        <br>
+      {% endfor %}
+      </p>
+    </div>
+  </div>
+  {% endif %}
+{% endmacro %}
+
+
+{% macro info_box(infomsg) %}
+  {% if infomsg %}
+  <div class="row uniform">
+    <div class="3u 12u$(medium)"></div>
+    <div class="9u$ 12u$(medium)">
+      <p style="color:green">
+      {% for para in infomsg %}
+        {{ para }}
+        <br>
+      {% endfor %}
+      </p>
+    </div>
+  </div>
+  {% endif %}
+{% endmacro %}
+
+
+{% macro chart(chart_id, data_all_url, data_new_url, update_ms, title, y_label, x_width, font_color, height) %}
+<figure class="highcharts-figure">
+  <div id="{{ chart_id }}"></div>
+</figure>
+
+<script>
+Highcharts.chart('{{ chart_id }}', {
+    chart: {
+        type: 'line',
+        backgroundColor: 'transparent',
+        height: '{{ height }}',
+        animation: Highcharts.svg, // don't animate in old IE
+        marginRight: 10,
+        events: {
+            load: function () {
+                var series = this.series[0];
+                // load initial data
+                var requests1 = $.get('{{ data_all_url }}');
+                var data = [];
+                requests1.done(function (result) {
+                    for (const idx in result) {
+                        var x = result[idx][0],
+                            y = result[idx][1];
+                        series.addPoint([x, y], true, false);
+                    }
+                });
+                // set up the updating of the chart each second
+                setInterval(function () {
+                    var shift_ = series.data.length > {{ x_width }};
+                    var requests2 = $.get('{{ data_new_url }}');
+                    requests2.done(function (result) {
+                        //var x = result[0],
+                        //    y = result[1];
+                        series.addPoint(result, true, shift_);
+                    });
+                }, {{ update_ms }});
+            }
+        }
+    },
+
+    time: {
+        useUTC: false
+    },
+
+    title: {
+        text: '{{ title }}',
+        style: {
+            color: '{{ font_color }}',
+            fontWeight: 600,
+            fontFamily: 'Source Sans Pro'
+        }
+    },
+
+    accessibility: {
+        announceNewData: {
+            enabled: true,
+            minAnnounceInterval: 15000,
+            announcementFormatter: function (allSeries, newSeries, newPoint) {
+                if (newPoint) {
+                    return 'New point added. Value: ' + newPoint.y;
+                }
+                return false;
+            }
+        }
+    },
+
+    xAxis: {
+        type: 'datetime',
+        tickPixelInterval: 150,
+        labels: {
+            style: {
+                color: '{{ font_color }}'
+            }
+        }
+    },
+
+    yAxis: {
+        title: {
+            text: '{{ y_label }}',
+            style: {
+                color: '{{ font_color }}'
+            }
+        },
+        labels: {
+            style: {
+                color: '{{ font_color }}'
+            }
+        },
+        plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
+        }]
+    },
+
+    tooltip: {
+        headerFormat: '<b>{series.name}</b><br/>',
+        pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
+    },
+
+    legend: {
+        enabled: false
+    },
+
+    exporting: {
+        enabled: false
+    },
+
+    series: [{
+        name: '{{ title }}',
+        data: []
+    }]
+});
+</script>
+{% endmacro %}
+
